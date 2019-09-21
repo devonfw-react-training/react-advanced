@@ -1,8 +1,10 @@
 import React, { Component, ReactNode } from 'react';
 import { Book } from '../../Book';
 import { BookDetails } from '../BookDetails/BookDetails';
+import { BooksService } from '../../services/BooksService';
 
 export interface Props {
+  bookService: Pick<BooksService, 'findAll'>
 }
 
 interface State {
@@ -17,19 +19,7 @@ export class BookOverview extends Component<Props, State> {
   };
 
   componentDidMount(): void {
-    this.setState({
-      books: [
-        {
-          id: 1,
-          authors: 'John Example',
-          title: 'Example Book'
-        },
-        {
-          id: 2,
-          authors: 'Joe Smith',
-          title: 'Another Book'
-        }]
-    });
+    this.props.bookService.findAll().then(books => this.setState({books}));
   }
 
   selectBook(book: Book): void {
