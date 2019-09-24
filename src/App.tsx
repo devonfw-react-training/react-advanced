@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter, NavLink, Redirect, Route, Switch } from 'react-router-dom';
 import { BookOverviewContainer } from './book/components/BookOverview/BookOverviewContainer';
 import styles from './App.module.scss';
-import { BooksService } from './book/services/BooksService';
+import { RemoteBooksService } from './book/services/RemoteBooksService';
 import { BookDetailsContainer } from './book/components/BookDetails/BookDetailsContainer';
 
-const bookService = new BooksService();
+const bookService = new RemoteBooksService();
 
 const NavBar = () => (
   <nav className={ styles['nav-bar'] }>

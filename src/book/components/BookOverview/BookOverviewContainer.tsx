@@ -27,7 +27,7 @@ export class BookOverviewContainer extends Component<Props, State> {
 
   render() {
     return (
-      <BookOverviewFC books={ this.state.books } selectBook={ this.selectBook }/>
+      <BookOverviewFC books={this.state.books} selectBook={this.selectBook} />
     );
   }
 }
