@@ -1,14 +1,13 @@
 import React, { Component, SyntheticEvent } from 'react';
 import { Book } from '../../Book';
-import styles from './BookDetails.module.scss'
+import styles from './BookDetails.module.scss';
 
-export interface Props {
+interface Props {
   book: Book;
   onBookChange?: (book: Book) => void
 }
 
-interface State extends Book {
-}
+type State = Book;
 
 export class BookDetails extends Component<Props, State> {
   state: State = {
@@ -34,11 +33,11 @@ export class BookDetails extends Component<Props, State> {
 
   render(): React.ReactNode {
     return (
-      <div className={styles.form}>
+      <div className={`${styles.form} container`}>
         <form onSubmit={this.notifyOnBookChange}>
           <div className="form-group row">
-            <label htmlFor="authors" className="col-sm-3 col-form-label">Authors:</label>
-            <div className="col-sm-9">
+            <label htmlFor="authors" className="col-sm-4 col-form-label">Authors:</label>
+            <div className="col-sm-8">
               <input id="authors"
                      type="text"
                      className="form-control"
@@ -48,8 +47,8 @@ export class BookDetails extends Component<Props, State> {
             </div>
           </div>
           <div className="form-group row">
-            <label htmlFor="title" className="col-sm-3 col-form-label">Title:</label>
-            <div className="col-sm-9">
+            <label htmlFor="title" className="col-sm-4 col-form-label">Title:</label>
+            <div className="col-sm-8">
               <input id="title"
                      type="text"
                      className="form-control"
@@ -59,7 +58,7 @@ export class BookDetails extends Component<Props, State> {
             </div>
           </div>
           <div className="form-group row">
-            <div className="offset-sm-3 col-sm-9">
+            <div className="offset-sm-4 col-sm-9">
               <button className="btn btn-primary">Apply</button>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { mount, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import { BookOverview } from './BookOverview';
 import { Book } from '../../Book';
 
@@ -44,17 +44,6 @@ describe('Book Overview Component', () => {
     return bookServiceMockPromise.then(() => { // make sure assertions are done AFTER the state is updated
       // then
       expect(wrapper).toHaveState('books', books);
-    });
-  });
-
-  it('sets the selectedBook to null after mounting', () => {
-    // given
-    expect.hasAssertions();
-    // when
-    const wrapper = shallow(<BookOverview bookService={bookServiceMock}/>);
-    return bookServiceMockPromise.then(() => {
-      // then
-      expect(wrapper).toHaveState('selectedBook', null);
     });
   });
 
@@ -104,83 +93,17 @@ describe('Book Overview Component', () => {
     });
   });
 
-  it('updates the state upon click on the row', () => {
+  it('calls back upon click on the row', () => {
     // given
     expect.hasAssertions();
-    const wrapper = shallow(<BookOverview bookService={bookServiceMock}/>);
+    const callbackMock = jest.fn();
+    const wrapper = shallow(<BookOverview bookService={bookServiceMock} onBookSelection={callbackMock}/>);
     return bookServiceMockPromise.then(() => {
       const johnExampleRow = wrapper.find('table tbody tr').at(0);
       // when
       johnExampleRow.simulate('click');
       // then
-      expect(wrapper).toHaveState('selectedBook', books[0]);
+      expect(callbackMock).toHaveBeenCalledWith(books[0]);
     });
-  });
-
-  it('selects a table row upon its click', () => {
-    // given
-    expect.hasAssertions();
-    const wrapper = shallow(<BookOverview bookService={bookServiceMock}/>);
-    return bookServiceMockPromise.then(() => {
-      const johnExampleRow = findJohnExampleRowFrom(wrapper);
-      // when
-      johnExampleRow.simulate('click');
-      // then
-      expect(findJohnExampleRowFrom(wrapper)).toHaveClassName('table-active');
-    });
-
-    function findJohnExampleRowFrom(wrapper: ShallowWrapper<any, any>) {
-      return wrapper.find('table tbody tr').at(0);
-    }
-  });
-
-  it('renders details upon click on the row', () => {
-    // given
-    expect.hasAssertions();
-    const wrapper = mount(<BookOverview bookService={bookServiceMock}/>);
-    return bookServiceMockPromise.then(() => {
-      wrapper.update();
-      const johnExampleRow = wrapper.find('table tbody tr').at(0);
-      // when
-      johnExampleRow.simulate('click');
-      // then
-      const bookDetails = wrapper.find('div.row > div').at(1);
-
-      const authors = bookDetails.find('input#authors');
-      const title = bookDetails.find('input#title');
-      expect(authors.prop('value')).toBe(books[0].authors);
-      expect(title.prop('value')).toBe(books[0].title);
-    });
-  });
-
-  it('updates a book row upon changes done in the details', () => {
-    // given
-    expect.hasAssertions();
-    const wrapper = mount(<BookOverview bookService={bookServiceMock}/>);
-    return bookServiceMockPromise.then(() => {
-      wrapper.update();
-      // select the first row
-      const johnExampleRow = findFirstTableRowFrom(wrapper);
-      johnExampleRow.simulate('click');
-      // update authors in the details
-      const bookDetails = wrapper.find('div.row > div').at(1);
-      const authors = bookDetails.find('input#authors');
-      const newAuthor = 'New Author';
-      authors.simulate('change', {target: {value: newAuthor}});
-      const form = bookDetails.find('form');
-      // when
-      form.simulate('submit', {preventDefault: jest.fn()});
-      // then
-      const updatedFirstRow = findFirstTableRowFrom(wrapper);
-      const authorsTableCell = updatedFirstRow.find('td').at(0);
-      expect(authorsTableCell).toHaveText(newAuthor);
-
-      const titleTableCell = updatedFirstRow.find('td').at(1);
-      expect(titleTableCell).toHaveText(books[0].title);
-    });
-
-    function findFirstTableRowFrom(wrapper: ReactWrapper) {
-      return wrapper.find('table tbody tr').at(0);
-    }
   });
 });

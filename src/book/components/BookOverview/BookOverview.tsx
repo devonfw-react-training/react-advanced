@@ -1,21 +1,19 @@
 import React, { Component, ReactNode } from 'react';
 import { Book } from '../../Book';
-import { BookDetails } from '../BookDetails/BookDetails';
 import { BooksService } from '../../services/BooksService';
 
 export interface Props {
   bookService: Pick<BooksService, 'findAll'>
+  onBookSelection?: (selectedBook: Book) => void;
 }
 
 interface State {
   books: Book[];
-  selectedBook: Book | null;
 }
 
 export class BookOverview extends Component<Props, State> {
   state: State = {
-    books: [],
-    selectedBook: null
+    books: []
   };
 
   componentDidMount(): void {
@@ -23,57 +21,33 @@ export class BookOverview extends Component<Props, State> {
   }
 
   selectBook(book: Book): void {
-    this.setState({selectedBook: book});
+    if (this.props.onBookSelection) {
+      this.props.onBookSelection(book);
+    }
   }
-
-  isBookSelected(book: Book): boolean {
-    return book === this.state.selectedBook;
-  }
-
-  updateBook = (bookToUpdate: Book) => {
-    this.setState(state => {
-      return {
-        books: state.books.map(book => book.id === bookToUpdate.id ? bookToUpdate : book),
-        selectedBook: bookToUpdate
-      }
-    });
-  };
 
   render(): ReactNode {
     return (
       <div className="container">
-        <div className="row">
-          <div className="col-md-8 col-12">
-            <table className="table table-hover">
-              <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Authors</th>
-                <th scope="col">Title</th>
-              </tr>
-              </thead>
-              <tbody>
-              {this.state.books.map((book, index) => (
-                <tr key={book.id}
-                    className={this.isBookSelected(book) ? 'table-active' : ''}
-                    onClick={() => this.selectBook(book)}>
-                  <th scope="row">{index + 1}</th>
-                  <td>{book.authors}</td>
-                  <td>{book.title}</td>
-                </tr>
-              ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="col-md-4 col-12">
-            {this.state.selectedBook &&
-            <BookDetails
-              key={this.state.selectedBook.id}
-              book={this.state.selectedBook}
-              onBookChange={this.updateBook}
-            />}
-          </div>
-        </div>
+        <table className="table table-hover table-sm">
+          <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Authors</th>
+            <th scope="col">Title</th>
+          </tr>
+          </thead>
+          <tbody>
+          {this.state.books.map((book, index) => (
+            <tr key={book.id}
+                onClick={() => this.selectBook(book)}>
+              <th scope="row">{index + 1}</th>
+              <td>{book.authors}</td>
+              <td>{book.title}</td>
+            </tr>
+          ))}
+          </tbody>
+        </table>
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import { Book, BookProperties } from '../Book';
+import { Book } from '../Book';
 
 export class BooksService {
   private sequencer = 0;
@@ -33,24 +33,23 @@ export class BooksService {
       () => bookCopy ? resolve(bookCopy) : reject(`book with id: ${id} not found`), 1000));
   }
 
-  save(bookToSave: Book | BookProperties): Promise<Book> {
-    const id = (<Book>bookToSave).id;
-    if (id != null) {
-      const book = this.books.find(book => book.id === id);
+  save(bookToSave: Book): Promise<Book> {
+    if (bookToSave.id != null) {
+      const book = this.books.find(book => book.id === bookToSave.id);
       if (book) {
         Object.assign(book, bookToSave);
-        return this.findOne(id);
+        return this.findOne(bookToSave.id);
       }
     }
     return this.saveNewAndFindOne(bookToSave);
   }
 
-  private saveNewAndFindOne(bookToSave: BookProperties) {
+  private saveNewAndFindOne(bookToSave: Book) {
     const {id} = this.saveNew(bookToSave);
     return this.findOne(id!);
   }
 
-  private saveNew(bookToSave: BookProperties): Book {
+  private saveNew(bookToSave: Book): Book {
     const savedBook = {...bookToSave, id: this.nextId()};
     this.books.push(savedBook);
     return savedBook;
