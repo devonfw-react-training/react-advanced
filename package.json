@@ -3,11 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/bootstrap": "^4.3.1",
     "@types/jest": "24.0.19",
     "@types/node": "12.11.7",
     "@types/react": "16.9.10",
     "@types/react-dom": "16.9.2",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-styled": "^2.5.3",
+    "json-server": "^0.15.1",
+    "jsonwebtoken": "^8.5.1",
     "react": "^16.11.0",
+    "react-bootstrap": "^1.0.0-beta.14",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
     "typescript": "3.6.4"
@@ -16,7 +23,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "json-server --watch --port=8000 ./server/database.json",
+    "server-auth": "node server/server.js"
   },
   "eslintConfig": {
     "extends": "react-app"
