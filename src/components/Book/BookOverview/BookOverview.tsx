@@ -16,7 +16,6 @@ const BookOverview: FunctionComponent<{}> = () => {
     message: "no books",
   })
   const selectBook = (book: Book): void => {
-    console.log("selectBook")
     setState(state => ({
       ...state,
       selectedBook: book,
@@ -28,8 +27,8 @@ const BookOverview: FunctionComponent<{}> = () => {
       .then((books: Book[]): void => {
         setState(state => ({ ...state, books }))
       })
-      .catch((error: Error): void => {
-        setState(state => ({ ...state, message: error.message }))
+      .catch(({ message }: Error): void => {
+        setState(state => ({ ...state, message }))
       })
   }, [])
   return (
@@ -63,7 +62,10 @@ const BookOverview: FunctionComponent<{}> = () => {
         </Col>
         <Col md={4}>
           {state.selectedBook && (
-            <BookDetails selectedBook={state.selectedBook} />
+            <BookDetails
+              key={state.selectedBook.id}
+              selectedBook={state.selectedBook}
+            />
           )}
         </Col>
       </Row>
