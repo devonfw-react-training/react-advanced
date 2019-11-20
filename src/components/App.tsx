@@ -1,12 +1,17 @@
 import React, { FunctionComponent } from "react"
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom"
 import "./App.css"
-import { BookOverView } from "./Book"
+import { BookOverView, BookDetails } from "./Book"
 
 const App: FunctionComponent = () => {
   return (
-    <div className="App">
-      <BookOverView />
-    </div>
+    <BrowserRouter>
+    <Switch>
+    <Redirect exact from="/" to="/overview" />
+      <Route path="/overview" component={BookOverView} />
+      <Route path="/details/:id" component={BookDetails} />
+    </Switch>
+    </BrowserRouter>
   )
 }
 

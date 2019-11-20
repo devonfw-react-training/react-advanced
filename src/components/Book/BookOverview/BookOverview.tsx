@@ -1,27 +1,23 @@
 import React, { FunctionComponent, useState, useEffect } from "react"
 import { Row, Container, Col, Table } from "react-bootstrap"
+import { useHistory } from "react-router-dom"
 import { fetchData } from "../../../common/utils"
-import { Book, BookDetails } from ".."
+import { Book } from ".."
 
 interface State {
   books: Book[]
-  selectedBook: Book | null
   message: string
 }
 
 const BookOverview: FunctionComponent<{}> = () => {
   const [state, setState] = useState<State>({
     books: [],
-    selectedBook: null,
     message: "no books",
   })
+  const history = useHistory()
   const selectBook = (book: Book): void => {
-    setState(state => ({
-      ...state,
-      selectedBook: book,
-    }))
+    history.push(`/details/${book.id}`)
   }
-
   useEffect(() => {
     fetchData("books")
       .then((books: Book[]): void => {
@@ -59,14 +55,6 @@ const BookOverview: FunctionComponent<{}> = () => {
               )}
             </tbody>
           </Table>
-        </Col>
-        <Col md={4}>
-          {state.selectedBook && (
-            <BookDetails
-              key={state.selectedBook.id}
-              selectedBook={state.selectedBook}
-            />
-          )}
         </Col>
       </Row>
     </Container>

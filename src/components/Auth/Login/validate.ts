@@ -5,7 +5,7 @@ interface Errors {
 }
 
 export default (values: FormValues) => {
-  const required: string[] = ["title"]
+  const required: string[] = ["username", "password"]
   return required.reduce(
     (acc: Errors, curr: string): Errors =>
       values[curr] ? acc : { ...acc, [curr]: "require" },
