@@ -25,9 +25,7 @@ export const useForm = <S, T>({
   const [state, dispatch]: any = useReducer(reducer, initialState)
   useEffect(
     () => {
-      if (Object.keys(validate(state.values)).length) {
-        dispatch(setErrors(validate(state.values)))
-      }
+      dispatch(setErrors(validate(state.values)))
     },
     [state.values, validate],
   )

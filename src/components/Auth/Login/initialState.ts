@@ -19,7 +19,7 @@ export const initialState = {
   touched: { username: false, password: false },
   errors: {},
   isSubmitting: false,
-  submitError: { message: "" },
+  formError: { message: "" },
 }
 
 export const validate = (values: FormValues) => {

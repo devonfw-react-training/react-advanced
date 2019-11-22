@@ -1,35 +1,33 @@
-import React, { FunctionComponent, useEffect, useState } from "react"
-import { useParams, useHistory } from 'react-router-dom'
+import React, { FunctionComponent } from "react"
+import { useHistory } from "react-router-dom"
 import { Form, ButtonToolbar, Button } from "react-bootstrap"
-import { useForm } from "../../../common/hooks/useForm"
-import { fetchData } from "../../../common/utils"
-import { Book } from ".."
-import { FormValues, FormTouched, initialState, validate, onSubmit } from "./initialState"
-
-type Params = { id?: string | undefined }
+import { useForm } from "../../../common/hooks"
+import {
+  FormValues,
+  FormTouched,
+  initialState,
+  validate,
+  onSubmit,
+} from "./initialState"
+import { useBooks } from "./useBooks"
 
 const BookDetails: FunctionComponent<{}> = () => {
-  const [errorMessage, setErrorMessage] = useState("")
-  const { state, getFieldProps, handleSubmit, dispatch, actions: { setFieldValue } } = useForm<FormValues, FormTouched>({
+  const history = useHistory()
+  const {
+    state: { values, errors },
+    getFieldProps,
+    handleSubmit,
+    dispatch,
+    actions: { setFieldValue, setErrors },
+  } = useForm<FormValues, FormTouched>({
     initialState,
     validate,
     onSubmit,
   })
-  const params: Params = useParams()
-  const history = useHistory()
-  useEffect(() => {
-    fetchData(`books/${params.id}`)
-      .then(({ title, authors }: Book): void => {
-        dispatch(setFieldValue({ title, authors }))
-        setErrorMessage("")
-      })
-      .catch(({ message }: Error): void => {
-        setErrorMessage(message)
-      })
-  }, [params.id, dispatch, setFieldValue ])
+  useBooks(dispatch, { setFieldValue, setErrors })
   return (
     <div>
-      {errorMessage || `Selected Book: ${state.values.title}`}
+      <div>{values.formError}</div>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Authors:</Form.Label>
@@ -40,11 +38,17 @@ const BookDetails: FunctionComponent<{}> = () => {
         </Form.Group>
         <Form.Group>
           <Form.Label>Title:</Form.Label>
-          <Form.Control required type="text" {...getFieldProps("title")}></Form.Control>
-          <Form.Control.Feedback>{state.errors.title}</Form.Control.Feedback>
+          <Form.Control
+            required
+            type="text"
+            {...getFieldProps("title")}
+          ></Form.Control>
+          <Form.Control.Feedback>{errors.title}</Form.Control.Feedback>
         </Form.Group>
         <ButtonToolbar>
-          <Button variant="light" type="button" onClick={history.goBack}>Back</Button>
+          <Button variant="light" type="button" onClick={history.goBack}>
+            Back
+          </Button>
           <Button type="submit">Save</Button>
         </ButtonToolbar>
       </Form>

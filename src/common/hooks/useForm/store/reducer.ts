@@ -1,11 +1,11 @@
-import { Errors, types } from './types';
+import { Errors, types } from "./types"
 
 export interface State<S, T> {
-  values: S;
-  touched: T;
-  errors: Errors;
-  isSubmitting: boolean;
-  submitError: Errors;
+  values: S
+  touched: T
+  errors: Errors
+  isSubmitting: boolean
+  formError: Errors
 }
 
 export const reducer = <S, T>(state: State<S, T>, action: any): State<S, T> => {
@@ -17,7 +17,7 @@ export const reducer = <S, T>(state: State<S, T>, action: any): State<S, T> => {
           ...state.values,
           ...action.payload,
         },
-      };
+      }
     case types.FORM_SET_FIELD_TOUCHED:
       return {
         ...state,
@@ -25,29 +25,29 @@ export const reducer = <S, T>(state: State<S, T>, action: any): State<S, T> => {
           ...state.touched,
           [action.payload]: true,
         },
-      };
+      }
     case types.FORM_SUBMIT_SUCCESS:
       return {
         ...state,
         isSubmitting: true,
-      };
+      }
     case types.FORM_SUBMIT_ATTEMPT:
       return {
         ...state,
         isSubmitting: false,
-      };
+      }
     case types.FORM_SUBMIT_FAILURE:
       return {
         ...state,
         isSubmitting: false,
-        submitError: action.payload,
-      };
+        formError: action.payload,
+      }
     case types.FORM_SET_ERRORS:
       return {
         ...state,
         errors: { ...action.payload },
-      };
+      }
     default:
-      return state;
+      return state
   }
-};
+}

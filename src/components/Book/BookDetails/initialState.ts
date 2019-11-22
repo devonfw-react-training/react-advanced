@@ -28,7 +28,7 @@ export const initialState = {
   touched: { title: false, authors: false },
   errors: {},
   isSubmitting: false,
-  submitError: { message: "" },
+  formError: { message: "" },
 }
 
 export const onSubmit = (values: FormValues) => {
