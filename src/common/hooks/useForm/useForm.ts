@@ -23,12 +23,9 @@ export const useForm = <S, T>({
   validate: (values: S) => Errors
 }) => {
   const [state, dispatch]: any = useReducer(reducer, initialState)
-  useEffect(
-    () => {
-      dispatch(setErrors(validate(state.values)))
-    },
-    [state.values, validate],
-  )
+  useEffect(() => {
+    dispatch(setErrors(validate(state.values)))
+  }, [state.values, validate])
   const handleChange = (fieldName: string) => (e: InputEvent) => {
     e.persist()
     dispatch(

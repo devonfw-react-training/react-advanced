@@ -1,7 +1,8 @@
-import React, { FunctionComponent } from "react"
-import { useHistory } from "react-router-dom"
+import React, { FunctionComponent, useEffect } from "react"
+import { useHistory, useParams } from "react-router-dom"
 import { Form, ButtonToolbar, Button } from "react-bootstrap"
-import { useForm } from "../../../common/hooks"
+import { fetchData } from "../../../common/utils"
+import { useForm, Errors } from "../../../common/hooks"
 import {
   FormValues,
   FormTouched,
@@ -9,10 +10,13 @@ import {
   validate,
   onSubmit,
 } from "./initialState"
-import { useBooks } from "./useBooks"
+import { Book } from ".."
+
+type Params = { id?: string | undefined }
 
 const BookDetails: FunctionComponent<{}> = () => {
   const history = useHistory()
+  const params: Params = useParams()
   const {
     state: { values, errors },
     getFieldProps,
@@ -24,7 +28,15 @@ const BookDetails: FunctionComponent<{}> = () => {
     validate,
     onSubmit,
   })
-  useBooks(dispatch, { setFieldValue, setErrors })
+  useEffect(() => {
+    fetchData(`books/${params.id}`)
+      .then(({ title, authors }: Book): void => {
+        dispatch(setFieldValue({ title, authors }))
+      })
+      .catch((error: Errors): void => {
+        dispatch(setErrors(error))
+      })
+  }, [params.id, dispatch, setFieldValue, setErrors])
   return (
     <div>
       <div>{values.formError}</div>
