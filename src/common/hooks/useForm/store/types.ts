@@ -4,7 +4,7 @@ export const types = {
   FORM_SUBMIT_ATTEMPT: "FORM_SUBMIT_ATTEMPT",
   FORM_SUBMIT_SUCCESS: "FORM_SUBMIT_SUCCESS",
   FORM_SUBMIT_FAILURE: "FORM_SUBMIT_FAILURE",
-  FORM_SET_ERRORS: "FORM_SET_ERRORS",
+  FORM_SET_ERRORS: "FORM_SET_ERRORS"
 }
 
 export interface SetFieldValue {
@@ -33,7 +33,7 @@ export interface SetErrors {
 }
 
 export type Field = {
-  [key: string]: string
+  [key: string]: string | number
 }
 
 export interface Errors {

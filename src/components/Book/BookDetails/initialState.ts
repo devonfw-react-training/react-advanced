@@ -1,7 +1,10 @@
+import { fetchData } from "../../../common/utils"
+
 export interface FormValues {
+  id?: number | undefined
   title: string
   authors: string
-  [key: string]: string
+  [key: string]: string | number | undefined
 }
 
 export interface FormTouched {
@@ -19,7 +22,7 @@ export const validate = (values: FormValues) => {
   return required.reduce(
     (acc: Errors, curr: string): Errors =>
       values[curr] ? acc : { ...acc, [curr]: "require" },
-    {},
+    {}
   )
 }
 
@@ -28,9 +31,11 @@ export const initialState = {
   touched: { title: false, authors: false },
   errors: {},
   isSubmitting: false,
-  formError: { message: "" },
+  formError: { message: "" }
 }
 
-export const onSubmit = (values: FormValues) => {
-  console.log(values)
+export const onSubmit = (path: string, method: string) => (
+  values: FormValues
+) => {
+  return fetchData(path, method, values)
 }

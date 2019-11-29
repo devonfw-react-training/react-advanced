@@ -7,21 +7,23 @@ const {
   submitAttempt,
   submitSuccess,
   submitFailure,
-  setErrors,
+  setErrors
 } = actions
 
 type InputEvent = FormEvent<HTMLInputElement>
 type FormElEvent = FormEvent<HTMLFormElement>
 
-export const useForm = <S, T>({
-  initialState,
-  onSubmit,
-  validate,
-}: {
+interface FormParams<S, T> {
   initialState: State<S, T>
   onSubmit: (values: S) => void
   validate: (values: S) => Errors
-}) => {
+}
+
+export const useForm = <S, T>({
+  initialState,
+  onSubmit,
+  validate
+}: FormParams<S, T>) => {
   const [state, dispatch]: any = useReducer(reducer, initialState)
   useEffect(() => {
     dispatch(setErrors(validate(state.values)))
@@ -30,8 +32,8 @@ export const useForm = <S, T>({
     e.persist()
     dispatch(
       setFieldValue({
-        [fieldName]: e.currentTarget.value,
-      }),
+        [fieldName]: e.currentTarget.value
+      })
     )
   }
   const handleBlur = (fieldName: string) => (e: InputEvent) => {
@@ -40,10 +42,11 @@ export const useForm = <S, T>({
   }
   const getFieldProps = (fieldName: string) => ({
     name: fieldName,
+    id: fieldName,
     value: state.values[fieldName],
     onInput: handleChange(fieldName),
     onBlur: handleBlur(fieldName),
-    onChange: handleChange(fieldName),
+    onChange: handleChange(fieldName)
   })
   const handleSubmit = async (e: FormElEvent) => {
     e.preventDefault()
@@ -54,7 +57,7 @@ export const useForm = <S, T>({
         await onSubmit(state.values)
         dispatch(submitSuccess())
       } catch (submitError) {
-        dispatch(submitFailure(submitError))
+        dispatch(submitFailure({ message: submitError.message }))
       }
     } else {
       dispatch(setErrors(errors))
@@ -66,6 +69,6 @@ export const useForm = <S, T>({
     getFieldProps,
     handleSubmit,
     dispatch,
-    actions,
+    actions
   }
 }

@@ -8,7 +8,7 @@ import {
   FormTouched,
   initialState,
   validate,
-  onSubmit,
+  onSubmit
 } from "./initialState"
 import { Book } from ".."
 
@@ -17,21 +17,23 @@ type Params = { id?: string | undefined }
 const BookDetails: FunctionComponent<{}> = () => {
   const history = useHistory()
   const params: Params = useParams()
+  const method = params.id ? "PUT" : "POST"
+  const path = params.id ? `books/${params.id}` : "books"
   const {
-    state: { values, errors },
+    state: { errors, touched, formError },
     getFieldProps,
     handleSubmit,
     dispatch,
-    actions: { setFieldValue, setErrors },
+    actions: { setFieldValue, setErrors }
   } = useForm<FormValues, FormTouched>({
     initialState,
     validate,
-    onSubmit,
+    onSubmit: onSubmit(path, method)
   })
   useEffect(() => {
     fetchData(`books/${params.id}`)
-      .then(({ title, authors }: Book): void => {
-        dispatch(setFieldValue({ title, authors }))
+      .then(({ id, title, authors }: Book): void => {
+        dispatch(setFieldValue({ id, title, authors }))
       })
       .catch((error: Errors): void => {
         dispatch(setErrors(error))
@@ -39,23 +41,25 @@ const BookDetails: FunctionComponent<{}> = () => {
   }, [params.id, dispatch, setFieldValue, setErrors])
   return (
     <div>
-      <div>{values.formError}</div>
+      <div>{formError.message}</div>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
-          <Form.Label>Authors:</Form.Label>
+          <Form.Label htmlFor="authors">Authors:</Form.Label>
           <Form.Control
             type="text"
             {...getFieldProps("authors")}
           ></Form.Control>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Title:</Form.Label>
+          <Form.Label htmlFor="title">Title:</Form.Label>
           <Form.Control
             required
             type="text"
             {...getFieldProps("title")}
           ></Form.Control>
-          <Form.Control.Feedback>{errors.title}</Form.Control.Feedback>
+          {touched.title && (
+            <Form.Control.Feedback>{errors.title}</Form.Control.Feedback>
+          )}
         </Form.Group>
         <ButtonToolbar>
           <Button variant="light" type="button" onClick={history.goBack}>

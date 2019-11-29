@@ -1,7 +1,19 @@
 {
   "books": [
-    { "id": 1, "title": "Book 1", "authors": "Authors: 1" },
-    { "id": 2, "title": "Book 2", "authors": "Authors: 2" },
-    { "id": 3, "title": "Book 3", "authors": "Authors: 3" }
+    {
+      "title": "Book 1 edited",
+      "authors": "Authors: 1",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "title": "Book 2",
+      "authors": "Authors: 2"
+    },
+    {
+      "id": 3,
+      "title": "Book 3",
+      "authors": "Authors: 3"
+    }
   ]
 }
