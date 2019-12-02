@@ -4,7 +4,7 @@ export const types = {
   FORM_SUBMIT_ATTEMPT: "FORM_SUBMIT_ATTEMPT",
   FORM_SUBMIT_SUCCESS: "FORM_SUBMIT_SUCCESS",
   FORM_SUBMIT_FAILURE: "FORM_SUBMIT_FAILURE",
-  FORM_SET_ERRORS: "FORM_SET_ERRORS"
+  FORM_SET_ERRORS: "FORM_SET_ERRORS",
 }
 
 export interface SetFieldValue {
@@ -17,11 +17,9 @@ export interface SetFieldTouched {
 }
 export interface SubmitAttempt {
   type: typeof types.FORM_SET_FIELD_VALUE
-  payload: null
 }
 export interface SubmitSuccess {
   type: typeof types.FORM_SET_FIELD_VALUE
-  payload: null
 }
 export interface SubmitFailure {
   type: typeof types.FORM_SET_FIELD_VALUE

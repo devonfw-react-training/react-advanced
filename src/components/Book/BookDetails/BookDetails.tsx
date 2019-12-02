@@ -8,7 +8,7 @@ import {
   FormTouched,
   initialState,
   validate,
-  onSubmit
+  onSubmit,
 } from "./initialState"
 import { Book } from ".."
 
@@ -24,11 +24,11 @@ const BookDetails: FunctionComponent<{}> = () => {
     getFieldProps,
     handleSubmit,
     dispatch,
-    actions: { setFieldValue, setErrors }
+    actions: { setFieldValue, setErrors },
   } = useForm<FormValues, FormTouched>({
     initialState,
     validate,
-    onSubmit: onSubmit(path, method)
+    onSubmit: onSubmit(path, method),
   })
   useEffect(() => {
     fetchData(`books/${params.id}`)

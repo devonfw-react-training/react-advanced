@@ -22,7 +22,7 @@ export const validate = (values: FormValues) => {
   return required.reduce(
     (acc: Errors, curr: string): Errors =>
       values[curr] ? acc : { ...acc, [curr]: "require" },
-    {}
+    {},
   )
 }
 
@@ -31,11 +31,11 @@ export const initialState = {
   touched: { title: false, authors: false },
   errors: {},
   isSubmitting: false,
-  formError: { message: "" }
+  formError: { message: "" },
 }
 
 export const onSubmit = (path: string, method: string) => (
-  values: FormValues
+  values: FormValues,
 ) => {
   return fetchData(path, method, values)
 }

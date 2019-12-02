@@ -7,7 +7,7 @@ const {
   submitAttempt,
   submitSuccess,
   submitFailure,
-  setErrors
+  setErrors,
 } = actions
 
 type InputEvent = FormEvent<HTMLInputElement>
@@ -22,7 +22,7 @@ interface FormParams<S, T> {
 export const useForm = <S, T>({
   initialState,
   onSubmit,
-  validate
+  validate,
 }: FormParams<S, T>) => {
   const [state, dispatch]: any = useReducer(reducer, initialState)
   useEffect(() => {
@@ -32,8 +32,8 @@ export const useForm = <S, T>({
     e.persist()
     dispatch(
       setFieldValue({
-        [fieldName]: e.currentTarget.value
-      })
+        [fieldName]: e.currentTarget.value,
+      }),
     )
   }
   const handleBlur = (fieldName: string) => (e: InputEvent) => {
@@ -46,7 +46,7 @@ export const useForm = <S, T>({
     value: state.values[fieldName],
     onInput: handleChange(fieldName),
     onBlur: handleBlur(fieldName),
-    onChange: handleChange(fieldName)
+    onChange: handleChange(fieldName),
   })
   const handleSubmit = async (e: FormElEvent) => {
     e.preventDefault()
@@ -69,6 +69,6 @@ export const useForm = <S, T>({
     getFieldProps,
     handleSubmit,
     dispatch,
-    actions
+    actions,
   }
 }

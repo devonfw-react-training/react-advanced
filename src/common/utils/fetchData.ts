@@ -1,7 +1,7 @@
 import { baseUrl } from "."
 
 const headers = {
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
 }
 
 const handleError = (res: Response) => {
