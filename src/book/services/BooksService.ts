@@ -1,9 +1,9 @@
-import { Book } from '../Book';
+import {Book} from '../Book'
 
 export interface BooksService {
-  findAll(): Promise<Book[]>;
+  findAll(): Promise<Book[]>
 
-  findOne(id: number): Promise<Book>;
+  findOne(id: number): Promise<Book>
 
-  save(bookToSave: Book): Promise<Book>;
+  save(bookToSave: Book): Promise<Book>
 }
