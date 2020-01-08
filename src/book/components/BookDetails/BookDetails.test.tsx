@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {mount} from 'enzyme'
 import {BookDetails} from './BookDetails'
 import {Book, BookProperties} from '../../Book'
+import {render, fireEvent, cleanup} from '@testing-library/react'
+
+afterEach(cleanup)
 
 describe('Book Details Component', () => {
   const currentBook = {
@@ -21,27 +23,21 @@ describe('Book Details Component', () => {
   })
 
   it('renders authors with a label', () => {
-    // given
-    const wrapper = mount(<BookDetails book={currentBook} />)
-    // when
-    wrapper.update()
+    // given-when
+    const {getByLabelText} = render(<BookDetails book={currentBook} />)
+
     // then
-    const label = wrapper.find('label[htmlFor="authors"]')
-    const authors = wrapper.find('input[name="authors"]')
-    expect(label).toHaveText('Authors:')
-    expect(authors.prop('value')).toBe(currentBook.authors)
+    const authors = getByLabelText('Authors:') as HTMLInputElement
+    expect(authors.value).toBe(currentBook.authors)
   })
 
   it('renders a title with a label', () => {
-    // given
-    const wrapper = mount(<BookDetails book={currentBook} />)
-    // when
-    wrapper.update()
+    // given-when
+    const {getByLabelText} = render(<BookDetails book={currentBook} />)
+
     // then
-    const label = wrapper.find('label[htmlFor="title"]')
-    const title = wrapper.find('input[name="title"]')
-    expect(label).toHaveText('Title:')
-    expect(title.prop('value')).toBe(currentBook.title)
+    const title = getByLabelText('Title:') as HTMLInputElement
+    expect(title.value).toBe(currentBook.title)
   })
 
   it('calls back passing updated book upon form submit', () => {
@@ -51,15 +47,16 @@ describe('Book Details Component', () => {
       Promise.resolve(book),
     )
     const onBookChangeAsyncTest = asyncTestFor(onBookChangeSpy)
-    const wrapper = mount(
+    const {getByText} = render(
       <BookDetails
         book={currentBook}
         onBookChange={onBookChangeAsyncTest.getFn()}
       />,
     )
-    const form = wrapper.find('form')
+    const button = getByText('Apply')
     // when
-    form.simulate('submit', {preventDefault: jest.fn()})
+    fireEvent.click(button)
+    // form.simulate('submit', {preventDefault: jest.fn()})
 
     return onBookChangeAsyncTest.afterFnHaveBeenCalled().then(() => {
       // then

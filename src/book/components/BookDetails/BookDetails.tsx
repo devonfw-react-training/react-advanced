@@ -41,6 +41,7 @@ export const BookDetails = (props: Props) => (
             <div className="col-sm-8">
               <Field
                 name="authors"
+                id="authors"
                 component={BookDetailsInputComponent}
                 validate={notEmptyAndMaxLengthOf(15)}
               />
@@ -53,6 +54,7 @@ export const BookDetails = (props: Props) => (
             <div className="col-sm-8">
               <Field
                 name="title"
+                id="title"
                 component={BookDetailsInputComponent}
                 validate={notEmptyAndMaxLengthOf(50)}
               />

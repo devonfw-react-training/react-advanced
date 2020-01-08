@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom'
 import {match} from 'react-router'
 import {BookOverviewContainer} from './BookOverviewContainer'
 import {createLocation, createMemoryHistory} from 'history'
-import {mount} from 'enzyme'
 import {Book} from '../../Book'
+import {render, cleanup, fireEvent} from '@testing-library/react'
+
+afterEach(cleanup)
 
 describe('Book Overview Container', () => {
   const books = [
@@ -60,7 +62,7 @@ describe('Book Overview Container', () => {
   it('change path after row click', async () => {
     // given
     history.push = jest.fn()
-    const wrapper = mount(
+    const {container} = render(
       <BookOverviewContainer
         bookService={bookServiceMock}
         history={history}
@@ -68,20 +70,17 @@ describe('Book Overview Container', () => {
         match={match}
       />,
     )
-    expect(wrapper.state()).toStrictEqual({books: []})
+    expect(container.querySelector('table tbody tr')).toBeNull()
 
     // pause the test and let the event loop cycle so the callback
     // queued by then() within componentDidMount can run
     await Promise.resolve()
 
-    wrapper.update()
-    expect(wrapper.state()).toStrictEqual({books: [...books]})
+    expect(container.querySelector('table tbody tr')).not.toBeNull()
 
-    expect(wrapper.state()).toStrictEqual({books: [...books]})
-    wrapper.update()
-    const johnExampleRow = wrapper.find('table tbody tr').at(0)
+    const johnExampleRow = container.querySelectorAll('table tbody tr')[0]
     // when
-    johnExampleRow.simulate('click')
+    fireEvent.click(johnExampleRow)
     // then
     expect(history.push).toHaveBeenCalled()
   })

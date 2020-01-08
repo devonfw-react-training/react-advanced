@@ -2,10 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {App, Routes} from './App'
 import {MemoryRouter} from 'react-router'
-import {mount} from 'enzyme'
-import {BookOverviewContainer} from './book/components/BookOverview/BookOverviewContainer'
-import {BookDetailsContainer} from './book/components/BookDetails/BookDetailsContainer'
-import {NavLink} from 'react-router-dom'
+import {render, fireEvent, cleanup} from '@testing-library/react'
+
+afterEach(cleanup)
 
 describe('App', () => {
   it('renders without crashing', () => {
@@ -18,31 +17,28 @@ describe('App', () => {
   })
 
   it('initial Path should redirect to Book Details Overview', () => {
-    const wrapper = mount(
+    const {container} = render(
       <MemoryRouter initialEntries={['/']}>
         <App />
       </MemoryRouter>,
     )
 
-    expect(wrapper.find(BookOverviewContainer)).toHaveLength(1)
-    expect(wrapper.find(BookDetailsContainer)).toHaveLength(0)
+    expect(container.querySelector('.table')).not.toBeNull()
+    expect(container.querySelector('form')).toBeNull()
   })
 
   it('should navigate to new Book page after clicking NEW BOOK link', () => {
-    const wrapper = mount(
+    const {container, getByText} = render(
       <MemoryRouter initialEntries={['/book-app/books']}>
         <Routes />
       </MemoryRouter>,
     )
 
-    expect(wrapper.find(BookDetailsContainer)).toHaveLength(0)
+    expect(container.querySelector('form')).toBeNull()
 
-    const newBookLink = wrapper
-      .find(NavLink)
-      .findWhere(c => c.text() === 'New Book')
-      .first()
-    newBookLink.simulate('click', {button: 0})
+    const newBookLink = getByText('New Book')
+    fireEvent.click(newBookLink, {button: 0})
 
-    expect(wrapper.find(BookDetailsContainer)).toHaveLength(1)
+    expect(container.querySelector('form')).not.toBeNull()
   })
 })
