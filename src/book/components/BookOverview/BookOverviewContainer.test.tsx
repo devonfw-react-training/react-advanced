@@ -5,6 +5,7 @@ import {BookOverviewContainer} from './BookOverviewContainer'
 import {createLocation, createMemoryHistory} from 'history'
 import {Book} from '../../Book'
 import {render, cleanup, fireEvent} from '@testing-library/react'
+import {act} from 'react-dom/test-utils'
 
 afterEach(cleanup)
 
@@ -53,7 +54,7 @@ describe('Book Overview Container', () => {
       div,
     )
 
-    await Promise.resolve()
+    await act(async () => Promise.resolve())
 
     // then no errors thrown
     ReactDOM.unmountComponentAtNode(div)
@@ -74,7 +75,7 @@ describe('Book Overview Container', () => {
 
     // pause the test and let the event loop cycle so the callback
     // queued by then() within componentDidMount can run
-    await Promise.resolve()
+    await act(async () => Promise.resolve())
 
     expect(container.querySelector('table tbody tr')).not.toBeNull()
 

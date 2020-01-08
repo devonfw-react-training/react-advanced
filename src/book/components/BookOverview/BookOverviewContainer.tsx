@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
+import React, {FC, useState, useEffect, useCallback} from 'react'
 import {Book} from '../../Book'
 import {BooksService} from '../../services/BooksService'
 import {RouteComponentProps} from 'react-router'
-import {BookOverviewFC} from './BookOverviewFC'
+import {BookOverview} from './BookOverview'
 
 export interface Props extends RouteComponentProps {
   bookService: Pick<BooksService, 'findAll'>
@@ -12,22 +12,21 @@ interface State {
   books: Book[]
 }
 
-export class BookOverviewContainer extends Component<Props, State> {
-  state: State = {
+export const BookOverviewContainer: FC<Props> = ({bookService, history}) => {
+  const [state, setState] = useState<State>({
     books: [],
-  }
+  })
 
-  componentDidMount(): void {
-    this.props.bookService.findAll().then(books => this.setState({books}))
-  }
+  useEffect(() => {
+    bookService.findAll().then(books => setState({books}))
+  }, [bookService, setState])
 
-  selectBook = (book: Book) => {
-    this.props.history.push(`/book-app/book/${book.id}`)
-  }
+  const selectBook = useCallback(
+    (book: Book) => {
+      history.push(`/book-app/book/${book.id}`)
+    },
+    [history],
+  )
 
-  render() {
-    return (
-      <BookOverviewFC books={this.state.books} selectBook={this.selectBook} />
-    )
-  }
+  return <BookOverview books={state.books} selectBook={selectBook} />
 }

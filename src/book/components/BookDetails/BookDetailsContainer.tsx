@@ -1,5 +1,5 @@
 import {RouteComponentProps} from 'react-router'
-import React, {Component} from 'react'
+import React, {FC, useState, useEffect, useRef, useCallback} from 'react'
 import {BooksService} from '../../services/BooksService'
 import {Book} from '../../Book'
 import {BookDetails} from './BookDetails'
@@ -16,53 +16,61 @@ interface BookDetailsContainerState {
   book: Book
 }
 
-export class BookDetailsContainer extends Component<
-  BookDetailsContainerProps,
-  BookDetailsContainerState
-> {
-  newBook: Book = {title: '', authors: ''}
+const newBook: Book = {title: '', authors: ''}
 
-  state = {
-    book: this.newBook,
-  }
+function usePrevious(value: any) {
+  const ref = useRef()
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+}
 
-  componentDidUpdate(
-    prevProps: Readonly<BookDetailsContainerProps>,
-    prevState: Readonly<BookDetailsContainerState>,
-    snapshot?: any,
-  ): void {
-    if (prevProps.location.key !== this.props.location.key) {
-      this.setState({
-        book: this.newBook,
+export const BookDetailsContainer: FC<BookDetailsContainerProps> = ({
+  location,
+  match,
+  history,
+  bookService,
+}) => {
+  const [state, setState] = useState<BookDetailsContainerState>({
+    book: newBook,
+  })
+
+  const previousValue = usePrevious(location.key)
+  const bookIdAsNumber = +match.params.id
+
+  useEffect(() => {
+    if (previousValue !== location.key) {
+      setState({
+        book: newBook,
       })
     }
-  }
+  }, [previousValue, setState, location])
 
-  componentDidMount(): void {
-    const bookIdAsNumber = +this.props.match.params.id
+  useEffect(() => {
     if (isNaN(bookIdAsNumber)) {
-      this.props.history.push('/book-app/book')
+      history.push('/book-app/book')
     } else {
-      this.props.bookService.findOne(bookIdAsNumber).then(
-        book => this.setState({book}),
-        () => this.props.history.push('/book-app/book'),
+      bookService.findOne(bookIdAsNumber).then(
+        book => setState({book}),
+        () => history.push('/book-app/book'),
       )
     }
-  }
+  }, [bookIdAsNumber, history, bookService, setState])
 
-  onBookChange = (book: Book): Promise<any> => {
-    return this.props.bookService
-      .save(book)
-      .then(() => this.props.history.push('/book-app/books'))
-  }
+  const onBookChange = useCallback(
+    async (book: Book): Promise<any> => {
+      await bookService.save(book)
+      return history.push('/book-app/books')
+    },
+    [bookService, history],
+  )
 
-  render() {
-    return (
-      <BookDetails
-        key={this.state.book.id}
-        book={this.state.book}
-        onBookChange={this.onBookChange}
-      />
-    )
-  }
+  return (
+    <BookDetails
+      key={state.book.id}
+      book={state.book}
+      onBookChange={onBookChange}
+    />
+  )
 }
