@@ -1,23 +1,99 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# [React](https://reactjs.org/) Advanced Training powered by [devonfw](http://devonfw.com/)
 
-## Available Scripts
+## Getting started
+
+### Install prerequisites
+
+#### Git
+
+Check if you have a Git client already installed:
+
+```
+git --version
+```
+
+If your OS can not recognize this command, install Git. For details please refer to [this page](http://git-scm.com).
+When installing under Windows, please make sure you check the following option:
+
+- Use git from Windows command prompt
+
+#### Node.js
+
+All examples have been implemented using [Node.js](https://nodejs.org/) `12.13.0`.
+
+It is highly recommended to install the [Node Version Manager](https://github.com/creationix/nvm) which manages multiple active
+[Node.js](https://nodejs.org/) versions on your machine. The latest windows version of nvm can be downloaded [here](https://github.com/coreybutler/nvm-windows/releases/download/1.1.7/nvm-setup.zip).
+
+Having the [Node Version Manager](https://github.com/creationix/nvm) installed, install Node.js:
+
+```
+nvm install 12.13.0
+```
+
+and set it to be used:
+
+```
+nvm use 12.13.0
+```
+
+#### yarn
+
+In the workshop we will use [yarn](https://yarnpkg.com/) as package manager. Follow the official intsllation guide to have it ready to use.
+
+### Clone, install dependencies and run
+
+Clone this repository and go to the `00-start` branch:
+
+```
+git clone https://github.com/devonfw-react-training/react-advanced.git -b 00-start
+```
+
+Install dependencies using [yarn](https://yarnpkg.com/):
+
+```
+cd react-advanced
+yarn
+```
+
+This may take several minutes...
+
+Start the application:
+
+```
+yarn start
+```
+
+An app that we built during the _foundations_ workshop should open in your default browser.
+The simple backend JSON-based server should also be up and running.
+
+### How we boosted the app
+
+In addition to the _foundations_ app we have levareged use of the following elements:
+
+- [Jest](https://jestjs.io/)
+
+- [Testing library/React](https://testing-library.com/docs/react-testing-library/intro)
+
+- [React hooks](https://reactjs.org/docs/hooks-intro.html)
+
+### Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+#### `yarn start`
 
-Runs the app in the development mode.<br>
+Runs the app (client and server) in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+#### `yarn test`
 
 Launches the test runner in the interactive watch mode.<br>
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+#### `yarn build`
 
 Builds the app for production to the `build` folder.<br>
 It correctly bundles React in production mode and optimizes the build for the best performance.
@@ -27,7 +103,7 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+#### `yarn eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
