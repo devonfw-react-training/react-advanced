@@ -1,7 +1,7 @@
 {
   "books": [
     {
-      "title": "Book 1 edited",
+      "title": "Book 1",
       "authors": "Authors: 1",
       "id": 1
     },
@@ -14,6 +14,27 @@
       "id": 3,
       "title": "Book 3",
       "authors": "Authors: 3"
+    },
+    {
+      "title": "Title 4",
+      "authors": "Authors: 4",
+      "id": 4
+    },
+    {
+      "title": "Book 5",
+      "authors": "Authors: 5",
+      "id": 5
+    },
+    {
+      "id": 6
+    },
+    {
+      "id": 7
+    },
+    {
+      "title": "Book 8",
+      "authors": "Authors: 8",
+      "id": 8
     }
   ]
 }

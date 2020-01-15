@@ -25,7 +25,7 @@ describe("BookDetails", () => {
     console.error = originalError
   })
 
-  it("should render error message for emty title field", async () => {
+  it("should render book with title 'book 1'", async () => {
     const wrapper = ({ children }: any) => (
       <MemoryRouter>{children}</MemoryRouter>
     )

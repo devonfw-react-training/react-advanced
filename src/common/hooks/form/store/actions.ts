@@ -8,6 +8,7 @@ import {
   SetErrors,
   Field,
   Errors,
+  Action,
 } from "./types"
 
 const setFieldValue = (payload: Field): SetFieldValue => ({
@@ -20,9 +21,11 @@ const setFieldTouched = (payload: string): SetFieldTouched => ({
 })
 const submitAttempt = (): SubmitAttempt => ({
   type: types.FORM_SUBMIT_ATTEMPT,
+  payload: undefined,
 })
 const submitSuccess = (): SubmitSuccess => ({
   type: types.FORM_SUBMIT_SUCCESS,
+  payload: undefined,
 })
 const submitFailure = (payload: Errors): SubmitFailure => ({
   type: types.FORM_SUBMIT_FAILURE,
@@ -32,6 +35,10 @@ const setErrors = (payload: Errors): SetErrors => ({
   type: types.FORM_SET_ERRORS,
   payload,
 })
+
+export type Actions = {
+  [key: string]: (payload: any) => Action
+}
 
 export const actions = {
   setFieldValue,

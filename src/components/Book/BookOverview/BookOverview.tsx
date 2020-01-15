@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useState, useEffect } from "react"
-import { Row, Container, Col, Table } from "react-bootstrap"
+import { Row, Container, Col, Table, Button } from "react-bootstrap"
+
 import { useHistory } from "react-router-dom"
 import { fetchData } from "../../../common/utils"
 import { Book } from ".."
@@ -18,6 +19,9 @@ const BookOverview: FunctionComponent<{}> = () => {
   const selectBook = (book: Book): void => {
     history.push(`/details/${book.id}`)
   }
+  const openNewForm = () => {
+    history.push("/details")
+  }
   useEffect(() => {
     fetchData("books")
       .then((books: Book[]): void => {
@@ -30,7 +34,14 @@ const BookOverview: FunctionComponent<{}> = () => {
   return (
     <Container>
       <Row>
-        <Col md={8}>
+        <Col md={2}>
+          <div>
+            <Button variant="light" type="button" onClick={openNewForm}>
+              Add new
+            </Button>
+          </div>
+        </Col>
+        <Col md={10}>
           <Table hover striped>
             <thead>
               <tr>

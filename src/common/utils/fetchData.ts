@@ -14,7 +14,12 @@ const handleError = (res: Response) => {
 export const delay = (time: number) =>
   new Promise(resolve => setTimeout(resolve, time))
 
-export const fetchData = (endpoint: string, method = "GET", body?: any) =>
-  fetch(baseUrl(endpoint), { method, headers, body: JSON.stringify(body) })
+export const fetchData = (endpoint: string, options: any = {}) =>
+  fetch(baseUrl(endpoint), {
+    method: options.method || "GET",
+    headers: { ...headers, ...options.headers },
+    signal: options.signal,
+    body: JSON.stringify(options.body),
+  })
     .then(handleError)
     .then(res => res.json())

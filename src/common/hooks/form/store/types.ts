@@ -17,9 +17,11 @@ export interface SetFieldTouched {
 }
 export interface SubmitAttempt {
   type: typeof types.FORM_SET_FIELD_VALUE
+  payload: undefined
 }
 export interface SubmitSuccess {
   type: typeof types.FORM_SET_FIELD_VALUE
+  payload: undefined
 }
 export interface SubmitFailure {
   type: typeof types.FORM_SET_FIELD_VALUE

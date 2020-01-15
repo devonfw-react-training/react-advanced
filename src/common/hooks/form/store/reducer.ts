@@ -1,14 +1,18 @@
 import { Errors, types } from "./types"
 
-export interface State<S, T> {
-  values: S
-  touched: T
+export interface State {
+  values: {
+    [key: string]: string
+  }
+  touched: {
+    [key: string]: boolean
+  }
   errors: Errors
   isSubmitting: boolean
   formError: Errors
 }
 
-export const reducer = <S, T>(state: State<S, T>, action: any): State<S, T> => {
+export const reducer = (state: State, action: any): State => {
   switch (action.type) {
     case types.FORM_SET_FIELD_VALUE:
       return {
